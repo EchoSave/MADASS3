@@ -15,18 +15,17 @@ export default function WelcomeScreen() {
         </Text>
       </View>
 
-      {/* Khối nút bấm phía dưới */}
       <View style={styles.buttonContainer}>
         <CustomButton 
           title="Sign In" 
           variant="primary" 
-          onPress={() => router.push('/(auth)/SignIn')} 
+          onPress={() => router.push('/(auth)/sign-in')} 
         />
         
         <CustomButton 
           title="Sign Up" 
           variant="secondary" 
-          onPress={() => router.push('/(auth)/SignUp')} 
+          onPress={() => router.push('/(auth)/sign-up')} 
         />
       </View>
     </View>
