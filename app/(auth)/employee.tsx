@@ -1,23 +1,21 @@
-import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import CustomButton from '../components/CustomButton';
 import CustomInput from '../components/CustomInput';
 
-export default function SignUp() {
-  const router = useRouter();
-
-  // Echo handles these states, it's just for testing the UI. Later, we will replace it with Formik for form handling and validation. !!!!
-  // (Delete these states below when integrated Formik)
+export default function EmployeeScreen() {
+  // Delete these states when integrated with Formik for form handling and validation. These states are just for testing the UI.
+  // SARON handles the employee information
   const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [employeeId, setEmployeeId] = useState('');
+  const [position, setPosition] = useState('');
 
-  // Echo handles this function ! 
-  // When clicking signup btn --> Employee page (employee information with at least 5 fields: Fullname, phone, email, employee id, position )
-  const handleSignUp = () => {
-    router.replace('/(auth)/employee');
+  // SARON handles this function. When clicking the submit button, show a page with a success message.
+  // Later, we will integrate Formik for form handling and validation. (Delete this function when integrated with Formik)
+  const handleSubmit = () => {
+    alert('Submitted employee information successfully');
   };
 
   return (
@@ -26,21 +24,26 @@ export default function SignUp() {
       style={styles.container}
     >
       <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
-        
-        {/* Header */}
+        {/** Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>Create Account</Text>
-          <Text style={styles.subtitle}>Sign up to start managing employee information</Text>
+          <Text style={styles.title}>Employee Information</Text>
+          <Text style={styles.subtitle}>Enter details to update employee records</Text>
         </View>
-
-        {/* Form with 4 inputs: Fullname, email, password, confirm password */}
+        {/** Form */}
         <View style={styles.form}>
           <CustomInput
             label="Full Name"
             placeholder="Antony Taylor"
             value={fullName}
             onChangeText={setFullName}
-            autoCapitalize="words" 
+          />
+
+          <CustomInput
+            label="Phone Number"
+            placeholder="403-XXX-XXXX"
+            value={phone}
+            onChangeText={setPhone}
+            keyboardType="phone-pad" 
           />
 
           <CustomInput
@@ -53,30 +56,26 @@ export default function SignUp() {
           />
 
           <CustomInput
-            label="Password"
-            placeholder="Enter secure password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            autoCapitalize="none"
+            label="Employee ID"
+            placeholder="EMP-12345"
+            value={employeeId}
+            onChangeText={setEmployeeId}
+            autoCapitalize="characters" 
           />
 
           <CustomInput
-            label="Confirm Password"
-            placeholder="Re-enter your password"
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            secureTextEntry
-            autoCapitalize="none"
+            label="Position"
+            placeholder="Software Developer"
+            value={position}
+            onChangeText={setPosition}
           />
         </View>
-
-        {/* SignUp button */}
+        {/** Submit button */}
         <View style={styles.footer}>
           <CustomButton 
-            title="Sign Up" 
+            title="Submit Information" 
             variant="primary" 
-            onPress={handleSignUp} 
+            onPress={handleSubmit} 
           />
         </View>
 
@@ -93,21 +92,20 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
     paddingHorizontal: 24,
-    justifyContent: 'center',
-    paddingTop: 40, 
+    paddingTop: 20,
     paddingBottom: 40,
   },
   header: {
-    marginBottom: 28,
+    marginBottom: 24,
   },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
     color: '#0f172a',
-    marginBottom: 8,
+    marginBottom: 6,
   },
   subtitle: {
-    fontSize: 15,
+    fontSize: 14,
     color: '#64748b',
   },
   form: {
@@ -115,6 +113,6 @@ const styles = StyleSheet.create({
   },
   footer: {
     width: '100%',
-    marginTop: 16,
+    marginTop: 8,
   },
 });

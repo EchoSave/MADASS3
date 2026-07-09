@@ -16,6 +16,7 @@ export default function SignIn() {
 
   return (
     // KeyboardAvoidingView boost for user experience by preventing the keyboard from covering input fields.
+		// Need to double-check the behavior for Android and iOS, as they handle keyboard differently. !!!!
     <KeyboardAvoidingView 
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
       style={styles.container}
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
     paddingHorizontal: 24,
-    justifyContent: 'center', // Căn giữa form theo chiều dọc cho đẹp mắt
+    justifyContent: 'center', 
   },
   header: {
     marginBottom: 32,
@@ -97,15 +98,15 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   forgotContainer: {
-    alignItems: 'flex-end', // Đẩy chữ sang góc bên phải giống các app thực tế
+    alignItems: 'flex-end', 
     marginTop: 4,
     marginBottom: 24,
   },
   forgotText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#0284c7', // Đổi sang màu xanh link để phân biệt rõ ràng
-    textDecorationLine: 'underline', // Gạch chân tạo cảm giác nhấn được
+    color: '#0284c7', 
+    textDecorationLine: 'underline', 
   },
   footer: {
     width: '100%',

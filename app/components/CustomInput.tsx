@@ -16,8 +16,8 @@ export default function CustomInput ({ label, error, touched, ...props}: CustomI
       <TextInput
         style={[
           styles.input,
-          isFocused && styles.inputFocused, // Đổi viền sang xanh khi focus
-          touched && error && styles.inputError, // Đổi viền sang đỏ khi có lỗi
+          isFocused && styles.inputFocused, 
+          touched && error && styles.inputError, 
         ]}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
