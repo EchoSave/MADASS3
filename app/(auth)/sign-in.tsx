@@ -1,22 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import CustomButton from '../components/CustomButton';
-import CustomInput from '../components/CustomInput';
+
+import BaseForm from "../components/forms/baseForm/BaseForm";
+import BaseFormField from "../components/forms/baseForm/BaseFormField";
+import { loginSchema } from "../validation/loginSchema";
 
 export default function SignIn() {
-  // Echo will handle the authentication, so we just need to manage the state for testing the UI.
-	//  Later, we will integrate Formik for form handling and validation. (Delete state below when Formik is integrated)
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
-	// Echo will handle this authentication
-  const handleSignIn = () => {
+  const initialValues = {
+    email: '',
+    password: '',
+  };
+
+  const handleSignIn = (values?: any) => {
     alert('Successfully signed in');
   };
 
   return (
-    // KeyboardAvoidingView boost for user experience by preventing the keyboard from covering input fields.
-		// Need to double-check the behavior for Android and iOS, as they handle keyboard differently. !!!!
     <KeyboardAvoidingView 
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
       style={styles.container}
@@ -31,39 +32,45 @@ export default function SignIn() {
 
         {/* Form */}
         <View style={styles.form}>
-          <CustomInput
-            label="Email Address"
-            placeholder="Enter your email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
+          <BaseForm
+            initialValues={initialValues}
+            validationSchema={loginSchema}
+            onSubmit={handleSignIn}
+          >
+            {(formik?: any) => (
+              <>
+                <BaseFormField
+                  name="email"
+                  label="Email Address"
+                  placeholder="Enter your email"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
 
-          <CustomInput
-            label="Password"
-            placeholder="Enter your password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry 
-            autoCapitalize="none"
-          />
+                <BaseFormField
+                  name="password"
+                  label="Password"
+                  placeholder="Enter your password"
+                  secureTextEntry
+                  autoCapitalize="none"
+                />
 
-          {/* Forget password below */}
-          <View style={styles.forgotContainer}>
-            <Pressable onPress={() => alert('Forgot password pressed!')}>
-              <Text style={styles.forgotText}>Forgot your password?</Text>
-            </Pressable>
-          </View>
-        </View>
+                {/* Forgot password */}
+                <View style={styles.forgotContainer}>
+                  <Pressable onPress={() => alert('Forgot password pressed!')}>
+                    <Text style={styles.forgotText}>Forgot your password?</Text>
+                  </Pressable>
+                </View>
 
-        {/* SignIn button */}
-        <View style={styles.footer}>
-          <CustomButton 
-            title="Sign In" 
-            variant="primary" 
-            onPress={handleSignIn} 
-          />
+                {/* Sign In button triggers Formik validation */}
+                <CustomButton 
+                  title="Sign In" 
+                  variant="primary" 
+                  onPress={formik.handleSubmit}
+                />
+              </>
+            )}
+          </BaseForm>
         </View>
 
       </ScrollView>
