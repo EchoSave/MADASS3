@@ -1,7 +1,8 @@
 // BaseFormField.jsx
 import { useField } from "formik";
+import React from "react";
 import { Text } from "react-native";
-import CustomInput from "../CustomInput"; // adjust path if needed
+import CustomInput from "../CustomInput";
 
 const BaseFormField = ({ label, ...props }) => {
   const [field, meta] = useField(props.name);

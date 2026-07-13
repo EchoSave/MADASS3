@@ -1,33 +1,44 @@
-import React from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import CustomButton from '../components/CustomButton';
+import React from "react";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import CustomButton from "../components/CustomButton";
 
-import BaseForm from "../components/forms/baseForm/BaseForm";
-import BaseFormField from "../components/forms/baseForm/BaseFormField";
+import BaseForm from "../components/forms/BaseForm";
+import BaseFormField from "../components/forms/BaseFormField";
 import { loginSchema } from "../validation/loginSchema";
 
 export default function SignIn() {
-
   const initialValues = {
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   };
 
   const handleSignIn = (values?: any) => {
-    alert('Successfully signed in');
+    alert("Successfully signed in");
   };
 
   return (
-    <KeyboardAvoidingView 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
-      <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
-        
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.title}>Sign In</Text>
-          <Text style={styles.subtitle}>Access your employee account securely</Text>
+          <Text style={styles.subtitle}>
+            Access your employee account securely
+          </Text>
         </View>
 
         {/* Form */}
@@ -57,22 +68,21 @@ export default function SignIn() {
 
                 {/* Forgot password */}
                 <View style={styles.forgotContainer}>
-                  <Pressable onPress={() => alert('Forgot password pressed!')}>
+                  <Pressable onPress={() => alert("Forgot password pressed!")}>
                     <Text style={styles.forgotText}>Forgot your password?</Text>
                   </Pressable>
                 </View>
 
                 {/* Sign In button triggers Formik validation */}
-                <CustomButton 
-                  title="Sign In" 
-                  variant="primary" 
+                <CustomButton
+                  title="Sign In"
+                  variant="primary"
                   onPress={formik.handleSubmit}
                 />
               </>
             )}
           </BaseForm>
         </View>
-
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -81,42 +91,42 @@ export default function SignIn() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
   },
   scrollContainer: {
     flexGrow: 1,
     paddingHorizontal: 24,
-    justifyContent: 'center', 
+    justifyContent: "center",
   },
   header: {
     marginBottom: 32,
   },
   title: {
     fontSize: 28,
-    fontWeight: 'bold',
-    color: '#0f172a',
+    fontWeight: "bold",
+    color: "#0f172a",
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 15,
-    color: '#64748b',
+    color: "#64748b",
   },
   form: {
-    width: '100%',
+    width: "100%",
   },
   forgotContainer: {
-    alignItems: 'flex-end', 
+    alignItems: "flex-end",
     marginTop: 4,
     marginBottom: 24,
   },
   forgotText: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#0284c7', 
-    textDecorationLine: 'underline', 
+    fontWeight: "600",
+    color: "#0284c7",
+    textDecorationLine: "underline",
   },
   footer: {
-    width: '100%',
+    width: "100%",
     marginTop: 8,
   },
 });
