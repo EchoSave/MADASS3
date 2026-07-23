@@ -1,18 +1,18 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "jsx": "react",
+    "jsx": "react-jsx",
     "strict": true,
-    "paths": {
-      "@/*": [
-        "./*"
-      ]
-    }
+    "moduleResolution": "bundler",
+    "module": "esnext",
+    "customConditions": ["react-native"]
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
+    "**/*.d.ts",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts"
-, "app/components/forms/BaseFormField.jsx"  ]
+    "expo-env.d.ts",
+    "app/components/forms/BaseFormField.jsx"
+  ]
 }
