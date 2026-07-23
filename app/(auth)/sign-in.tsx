@@ -1,4 +1,3 @@
-import React from "react";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -10,19 +9,34 @@ import {
 } from "react-native";
 import CustomButton from "../components/CustomButton";
 
+import { router } from "expo-router";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useState } from "react";
+import { auth } from "../../config/firebase";
 import BaseForm from "../components/forms/BaseForm";
 import BaseFormField from "../components/forms/BaseFormField";
 import { loginSchema } from "../validation/loginSchema";
 
 export default function SignIn() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
+
   const initialValues = {
     email: "",
     password: "",
   };
 
-  const handleSignIn = (values?: any) => {
-    alert("Successfully signed in");
-  };
+  const handleSignIn = async (values: { email: string; password: string }) => {
+    setAuthError(null);
+    setIsLoading(true);
+    try {
+      await signInWithEmailAndPassword(auth, values.email, values.password);
+    } catch (error: any) {
+      setAuthError(mapAuthError(error.code));
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   return (
     <KeyboardAvoidingView
@@ -65,7 +79,12 @@ export default function SignIn() {
                   secureTextEntry
                   autoCapitalize="none"
                 />
-
+                
+                {/* Auth error message */}
+                {authError && (
+                  <Text style={styles.errorText}>{authError}</Text>
+                )}
+                
                 {/* Forgot password */}
                 <View style={styles.forgotContainer}>
                   <Pressable onPress={() => alert("Forgot password pressed!")}>
@@ -78,7 +97,16 @@ export default function SignIn() {
                   title="Sign In"
                   variant="primary"
                   onPress={formik.handleSubmit}
+                  disabled={isLoading}
                 />
+
+                {/* Link to Sign Up */}
+                <View style={styles.signUpContainer}>
+                  <Text style={styles.signUpText}>Do not have an account? </Text>
+                  <Pressable onPress={() => router.push("/(auth)/sign-up")}>
+                    <Text style={styles.signUpLink}>Sign Up</Text>
+                  </Pressable>
+                </View>
               </>
             )}
           </BaseForm>
@@ -87,6 +115,24 @@ export default function SignIn() {
     </KeyboardAvoidingView>
   );
 }
+
+function mapAuthError (code: string) {
+  switch(code) {
+    case "auth/invalid-credential":
+    case "auth/wrong-password":
+    case "auth/user-not-found":
+      return "Email or password invalid";
+    case "auth/invalid-email":
+      return "Invalid email";
+    case "auth/too-many-requests":
+      return "You tried many times. Please try again later!";
+    case "auth/network-request-failed":
+      return "Error network connection. Please reconnect your network!";
+    default:
+      return "Failled login. Please try again!";
+  }
+}
+
 
 const styles = StyleSheet.create({
   container: {
@@ -128,5 +174,25 @@ const styles = StyleSheet.create({
   footer: {
     width: "100%",
     marginTop: 8,
+  },
+  errorText: {
+    color: "#dc2626", 
+    fontSize: 14, 
+    marginTop: 8, 
+    marginBottom: 4 
+  },
+  signUpContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 16,
+  },
+  signUpText: {
+    color: "#64748b",
+    fontSize: 14,
+  },
+  signUpLink: {
+    color: "#0284c7",
+    fontWeight: "600",
+    fontSize: 14,
   },
 });

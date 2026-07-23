@@ -1,21 +1,25 @@
-import { useRouter } from "expo-router";
-import React from "react";
 import {
   KeyboardAvoidingView,
   Platform,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
-  View,
+  View
 } from "react-native";
 import CustomButton from "../components/CustomButton";
 
+import { router } from "expo-router";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useState } from "react";
+import { auth } from "../../config/firebase";
 import BaseForm from "../components/forms/BaseForm";
 import BaseFormField from "../components/forms/BaseFormField";
 import { signupSchema } from "../validation/signupSchema";
 
 export default function SignUp() {
-  const router = useRouter();
+  const [isLoading, setIsisLoading] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   const initialValues = {
     fullName: "",
@@ -24,9 +28,20 @@ export default function SignUp() {
     confirmPassword: "",
   };
 
-  const handleSubmit = (values?: any) => {
-    console.log("Sign Up:", values);
-    router.replace("/(auth)/employee");
+  const handleSignUp = async (values: {
+    email: string;
+    password: string;
+  }) => {
+    setAuthError(null);
+    setIsisLoading(true);
+    try {
+      await createUserWithEmailAndPassword(auth, values.email, values.password);
+      // onAuthStateChanged listener will handle navigation to the employee screen
+    } catch (error: any) {
+      setAuthError(mapSignUpError(error.code));
+    } finally {
+      setIsisLoading(false);
+    }
   };
 
   return (
@@ -51,7 +66,7 @@ export default function SignUp() {
           <BaseForm
             initialValues={initialValues}
             validationSchema={signupSchema}
-            onSubmit={handleSubmit}
+            onSubmit={handleSignUp}
           >
             {(formik?: any) => (
               <>
@@ -82,11 +97,24 @@ export default function SignUp() {
                   secureTextEntry
                 />
 
+                {authError && (
+                  <Text style={styles.errorText}>{authError}</Text>
+                )}
+
                 <CustomButton
-                  title="Sign Up"
+                  title={isLoading ? "Creating Account..." : "Sign Up"}
                   variant="primary"
                   onPress={formik.handleSubmit}
+                  disabled={isLoading}
                 />
+
+                {/* Link to Sign In */}
+                <View style={styles.signInContainer}>
+                  <Text style={styles.signInText}>Already have an account? </Text>
+                  <Pressable onPress={() => router.push("/(auth)/sign-in")}>
+                    <Text style={styles.signInLink}>Sign In</Text>
+                  </Pressable>
+                </View>
               </>
             )}
           </BaseForm>
@@ -94,6 +122,22 @@ export default function SignUp() {
       </ScrollView>
     </KeyboardAvoidingView>
   );
+}
+
+// Map Firebase error codes to user-friendly messages
+function mapSignUpError(code: string): string {
+  switch (code) {
+    case "auth/email-already-in-use":
+      return "Registered email already exists. Please use a different email.";
+    case "auth/invalid-email":
+      return "Invalid email address.";
+    case "auth/weak-password":
+      return "Password is too weak. Please use at least 6 characters.";
+    case "auth/network-request-failed":
+      return "Network request failed. Please check your internet connection.";
+    default:
+      return "Sign up failed. Please try again.";
+  }
 }
 
 const styles = StyleSheet.create({
@@ -128,4 +172,25 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 16,
   },
+  errorText: {
+    color: "#dc2626", 
+    fontSize: 14, 
+    marginTop: 8, 
+    marginBottom: 4 
+  },
+  signInContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 16,
+  },
+  signInText: {
+    color: "#64748b",
+    fontSize: 14,
+  },
+  signInLink: {
+    color: "#0284c7",
+    fontWeight: "600",
+    fontSize: 14,
+  },
 });
+
