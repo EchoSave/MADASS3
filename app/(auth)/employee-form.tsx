@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import { Formik } from 'formik';
 import { useState } from 'react';
 import { Button, KeyboardAvoidingView, Modal, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -20,6 +21,11 @@ export default function EmployeeScreen() {
   };
 
   // When clicking the submit button, show a page with a success message.
+
+  const handleDismissModal = () => {
+    setModalVisible(false);
+    router.replace("/(tabs)/employee-page");
+  };
 
   return (
     <KeyboardAvoidingView 
@@ -115,7 +121,7 @@ export default function EmployeeScreen() {
           <View style={styles.modalBg}>
             <View style={styles.modalContent}>
               <Text style={styles.modalText}>Employee Added Successfully! </Text>
-              <Button title="Dismiss" onPress={() => setModalVisible(false)} />
+              <Button title="Dismiss" onPress={handleDismissModal} />
             </View>
           </View>
         </Modal>

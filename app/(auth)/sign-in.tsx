@@ -31,6 +31,7 @@ export default function SignIn() {
     setIsLoading(true);
     try {
       await signInWithEmailAndPassword(auth, values.email, values.password);
+      router.replace("/(tabs)/profile")
     } catch (error: any) {
       setAuthError(mapAuthError(error.code));
     } finally {

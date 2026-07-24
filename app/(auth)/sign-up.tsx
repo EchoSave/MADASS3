@@ -36,7 +36,7 @@ export default function SignUp() {
     setIsisLoading(true);
     try {
       await createUserWithEmailAndPassword(auth, values.email, values.password);
-      // onAuthStateChanged listener will handle navigation to the employee screen
+      router.replace("/(auth)/employee-form");
     } catch (error: any) {
       setAuthError(mapSignUpError(error.code));
     } finally {
