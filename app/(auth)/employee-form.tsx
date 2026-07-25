@@ -1,9 +1,10 @@
+import { router } from 'expo-router';
 import { Formik } from 'formik';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, KeyboardAvoidingView, Modal, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
-import * as Yup from 'yup';
 import CustomButton from '../components/CustomButton';
 import CustomInput from '../components/CustomInput';
+import { employeeSchema } from '../validation/employeeSchema';
 
 // Added imports 
 
@@ -26,15 +27,12 @@ export default function EmployeeScreen() {
     position: '',
   };
 
-  const employeeSchema = Yup.object().shape({
-    fullName: Yup.string().required('Full name is required'),
-    phone: Yup.string().required('Phone number is required'),
-    email: Yup.string().required('Email is required').email('Invalid email'),
-    employeeId: Yup.string().required('Employee ID is required'),
-    position: Yup.string().required('Position is required'),
-  });
-
   // When clicking the submit button, show a page with a success message.
+
+  const handleDismissModal = () => {
+    setModalVisible(false);
+    router.replace("/(tabs)/employee-page");
+  };
 
   return (
     <KeyboardAvoidingView 
@@ -137,7 +135,7 @@ export default function EmployeeScreen() {
           <View style={styles.modalBg}>
             <View style={styles.modalContent}>
               <Text style={styles.modalText}>Employee Added Successfully! </Text>
-              <Button title="Dismiss" onPress={() => setModalVisible(false)} />
+              <Button title="Dismiss" onPress={handleDismissModal} />
             </View>
           </View>
         </Modal>
