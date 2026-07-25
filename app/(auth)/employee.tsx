@@ -5,10 +5,17 @@ import * as Yup from 'yup';
 import CustomButton from '../components/CustomButton';
 import CustomInput from '../components/CustomInput';
 
+// Added imports 
+
+import { useAuth } from "../context/AuthContext";
+import { saveEmployee } from '../services/employeeService';
 
 export default function EmployeeScreen() {
 
   const [modalVisible, setModalVisible] = useState(false);
+
+  // Added auth hook to get the current user information, which can be used for employee records.
+  const { user } = useAuth();
 
   //  employee information /Formik now manages all form fields 
   const initialValues = {
@@ -48,11 +55,18 @@ export default function EmployeeScreen() {
           validationSchema={employeeSchema}
           enableReinitialize
           validateOnMount
-          onSubmit={(values, { resetForm }) => {
+  onSubmit={async (values, { resetForm }) => {
+
+            await saveEmployee({
+              ...values,
+              userId: user?.uid,     
+              createdAt: new Date(), 
+            });
+
             setModalVisible(true);
             resetForm();
           }}
-        >
+       >
           {(formik) => (
             <View style={styles.form}>
 
