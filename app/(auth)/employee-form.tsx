@@ -1,50 +1,62 @@
-import { router } from 'expo-router';
-import { Formik } from 'formik';
-import { useState } from 'react';
-import { Button, KeyboardAvoidingView, Modal, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
-import CustomButton from '../components/CustomButton';
-import CustomInput from '../components/CustomInput';
-import { employeeSchema } from '../validation/employeeSchema';
+import { router } from "expo-router";
+import { Formik } from "formik";
+import { useState } from "react";
+import {
+  Button,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import CustomButton from "../components/CustomButton";
+import CustomInput from "../components/CustomInput";
+import { employeeSchema } from "../validation/employeeSchema";
 
-// Added imports 
+// Added imports
 
 import { useAuth } from "../context/AuthContext";
-import { saveEmployee } from '../services/employeeService';
+import { saveEmployee } from "../services/employeeService";
 
 export default function EmployeeScreen() {
-
   const [modalVisible, setModalVisible] = useState(false);
 
   // Added auth hook to get the current user information, which can be used for employee records.
   const { user } = useAuth();
 
-  //  employee information /Formik now manages all form fields 
+  //  employee information /Formik now manages all form fields
   const initialValues = {
-    fullName: '',
-    phone: '',
-    email: '',
-    employeeId: '',
-    position: '',
+    fullName: "",
+    phone: "",
+    email: "",
+    employeeId: "",
+    position: "",
   };
 
   // When clicking the submit button, show a page with a success message.
 
   const handleDismissModal = () => {
     setModalVisible(false);
-    router.replace("./tabs/employee-page");
+    router.replace("/employee-page");
   };
 
   return (
-    <KeyboardAvoidingView 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
-      <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
-        
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.title}>Employee Information</Text>
-          <Text style={styles.subtitle}>Enter details to update employee records</Text>
+          <Text style={styles.subtitle}>
+            Enter details to update employee records
+          </Text>
         </View>
 
         {/* Formik Wrapper */}
@@ -53,36 +65,36 @@ export default function EmployeeScreen() {
           validationSchema={employeeSchema}
           enableReinitialize
           validateOnMount
-  onSubmit={async (values, { resetForm }) => {
-
+          onSubmit={async (values, { resetForm }) => {
             await saveEmployee({
               ...values,
-              userId: user?.uid,     
-              createdAt: new Date(), 
+              userId: user?.uid,
+              createdAt: new Date(),
             });
 
             setModalVisible(true);
             resetForm();
           }}
-       >
+        >
           {(formik) => (
             <View style={styles.form}>
-
               <CustomInput
                 label="Full Name"
                 placeholder="Antony Taylor"
                 value={formik.values.fullName}
-                onChangeText={formik.handleChange('fullName')}
-                onBlur={formik.handleBlur('fullName')}
-                error={formik.touched.fullName ? formik.errors.fullName : undefined}
+                onChangeText={formik.handleChange("fullName")}
+                onBlur={formik.handleBlur("fullName")}
+                error={
+                  formik.touched.fullName ? formik.errors.fullName : undefined
+                }
               />
 
               <CustomInput
                 label="Phone Number"
                 placeholder="403-XXX-XXXX"
                 value={formik.values.phone}
-                onChangeText={formik.handleChange('phone')}
-                onBlur={formik.handleBlur('phone')}
+                onChangeText={formik.handleChange("phone")}
+                onBlur={formik.handleBlur("phone")}
                 keyboardType="phone-pad"
                 error={formik.touched.phone ? formik.errors.phone : undefined}
               />
@@ -91,8 +103,8 @@ export default function EmployeeScreen() {
                 label="Email Address"
                 placeholder="antony@sait.ca"
                 value={formik.values.email}
-                onChangeText={formik.handleChange('email')}
-                onBlur={formik.handleBlur('email')}
+                onChangeText={formik.handleChange("email")}
+                onBlur={formik.handleBlur("email")}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 error={formik.touched.email ? formik.errors.email : undefined}
@@ -102,30 +114,35 @@ export default function EmployeeScreen() {
                 label="Employee ID"
                 placeholder="EMP-12345"
                 value={formik.values.employeeId}
-                onChangeText={formik.handleChange('employeeId')}
-                onBlur={formik.handleBlur('employeeId')}
+                onChangeText={formik.handleChange("employeeId")}
+                onBlur={formik.handleBlur("employeeId")}
                 autoCapitalize="characters"
-                error={formik.touched.employeeId ? formik.errors.employeeId : undefined}
+                error={
+                  formik.touched.employeeId
+                    ? formik.errors.employeeId
+                    : undefined
+                }
               />
 
               <CustomInput
                 label="Position"
                 placeholder="Software Developer"
                 value={formik.values.position}
-                onChangeText={formik.handleChange('position')}
-                onBlur={formik.handleBlur('position')}
-                error={formik.touched.position ? formik.errors.position : undefined}
+                onChangeText={formik.handleChange("position")}
+                onBlur={formik.handleBlur("position")}
+                error={
+                  formik.touched.position ? formik.errors.position : undefined
+                }
               />
 
               {/* Submit Button */}
               <View style={styles.footer}>
-                <CustomButton 
-                  title="Submit Information" 
-                  variant="primary" 
+                <CustomButton
+                  title="Submit Information"
+                  variant="primary"
                   onPress={formik.handleSubmit}
                 />
               </View>
-
             </View>
           )}
         </Formik>
@@ -134,21 +151,22 @@ export default function EmployeeScreen() {
         <Modal visible={modalVisible} transparent animationType="fade">
           <View style={styles.modalBg}>
             <View style={styles.modalContent}>
-              <Text style={styles.modalText}>Employee Added Successfully! </Text>
+              <Text style={styles.modalText}>
+                Employee Added Successfully!{" "}
+              </Text>
               <Button title="Dismiss" onPress={handleDismissModal} />
             </View>
           </View>
         </Modal>
-
       </ScrollView>
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-   container: {
+  container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
   },
   scrollContainer: {
     flexGrow: 1,
@@ -161,36 +179,36 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#0f172a',
+    fontWeight: "bold",
+    color: "#0f172a",
     marginBottom: 6,
   },
   subtitle: {
     fontSize: 14,
-    color: '#64748b',
+    color: "#64748b",
   },
   form: {
-    width: '100%',
+    width: "100%",
   },
   footer: {
-    width: '100%',
+    width: "100%",
     marginTop: 8,
   },
   modalBg: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
     padding: 30,
   },
   modalContent: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 30,
     borderRadius: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   modalText: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: 20,
   },
 });

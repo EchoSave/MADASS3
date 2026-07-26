@@ -1,6 +1,13 @@
 import { useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useEffect, useState } from "react";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+
 import { useAuth } from "../context/AuthContext";
 import { getEmployees } from "../services/employeeService";
 
@@ -30,7 +37,7 @@ export default function EmployeeListScreen() {
             style={styles.card}
             onPress={() =>
               router.push({
-                pathname: "/(tabs)/employeeDetails",
+                pathname: "/employeeDetails",
                 params: { id: item.id },
               })
             }

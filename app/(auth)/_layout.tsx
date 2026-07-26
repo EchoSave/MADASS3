@@ -5,14 +5,18 @@ export default function AuthLayout() {
   const { user, initializing } = useAuth();
   const pathname = usePathname();
 
-  const isOnEmployeeForm = pathname === "/auth/employee-form";
-
   if (initializing) {
     return null;
   }
 
-  if (user && !isOnEmployeeForm) {
-    return <Redirect href="/tabs/employee-page" />;
+  // Allow index + auth screens
+  const isAuthScreen = ["/", "/sign-in", "/sign-up", "/employee-form"].includes(
+    pathname,
+  );
+
+  // Only redirect logged-in users AWAY from auth screens
+  if (user && isAuthScreen) {
+    return <Redirect href="/employee-page" />;
   }
 
   return (

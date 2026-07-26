@@ -31,7 +31,7 @@ export default function SignIn() {
     setIsLoading(true);
     try {
       await signInWithEmailAndPassword(auth, values.email, values.password);
-      router.replace("./tabs/employee-page");
+      router.replace("/employee-page");
     } catch (error: any) {
       setAuthError(mapAuthError(error.code));
     } finally {
@@ -80,12 +80,10 @@ export default function SignIn() {
                   secureTextEntry
                   autoCapitalize="none"
                 />
-                
+
                 {/* Auth error message */}
-                {authError && (
-                  <Text style={styles.errorText}>{authError}</Text>
-                )}
-                
+                {authError && <Text style={styles.errorText}>{authError}</Text>}
+
                 {/* Forgot password */}
                 <View style={styles.forgotContainer}>
                   <Pressable onPress={() => alert("Forgot password pressed!")}>
@@ -103,8 +101,10 @@ export default function SignIn() {
 
                 {/* Link to Sign Up */}
                 <View style={styles.signUpContainer}>
-                  <Text style={styles.signUpText}>Do not have an account? </Text>
-                  <Pressable onPress={() => router.push("/(auth)/sign-up")}>
+                  <Text style={styles.signUpText}>
+                    Do not have an account?{" "}
+                  </Text>
+                  <Pressable onPress={() => router.push("/sign-up")}>
                     <Text style={styles.signUpLink}>Sign Up</Text>
                   </Pressable>
                 </View>
@@ -117,8 +117,8 @@ export default function SignIn() {
   );
 }
 
-function mapAuthError (code: string) {
-  switch(code) {
+function mapAuthError(code: string) {
+  switch (code) {
     case "auth/invalid-credential":
     case "auth/wrong-password":
     case "auth/user-not-found":
@@ -133,7 +133,6 @@ function mapAuthError (code: string) {
       return "Failled login. Please try again!";
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -177,10 +176,10 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   errorText: {
-    color: "#dc2626", 
-    fontSize: 14, 
-    marginTop: 8, 
-    marginBottom: 4 
+    color: "#dc2626",
+    fontSize: 14,
+    marginTop: 8,
+    marginBottom: 4,
   },
   signUpContainer: {
     flexDirection: "row",

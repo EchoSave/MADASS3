@@ -3,37 +3,32 @@ import { signOut } from "firebase/auth";
 import { useState } from "react";
 import { Alert, StyleSheet, Text, View } from "react-native";
 import { auth } from "../../config/firebase";
-import { useAuth } from "../context/AuthContext";
 import CustomButton from "../components/CustomButton";
+import { useAuth } from "../context/AuthContext";
 
 export default function ProfileScreen() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
 
   const handleSignOut = () => {
-    // Alert.alert(title, msg, [buttons]) is built-in API React Native
-    Alert.alert(
-      "Sign Out", // title
-      "Are you sure that you want to sign out?", // msg
-      [ // [buttons]
-        { text: "Cancel", style: "cancel" }, 
-        {
-          text: "Sign Out",
-          style: "destructive",
-          onPress: async () => {
-            setLoading(true);
-            try {
-              await signOut(auth);
-              router.replace("/auth/sign-in");
-            } catch (error) {
-              Alert.alert("Error", "Failed to sign out. Please try again.");
-            } finally {
-              setLoading(false);
-            }
-          },
+    Alert.alert("Sign Out", "Are you sure that you want to sign out?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Sign Out",
+        style: "destructive",
+        onPress: async () => {
+          setLoading(true);
+          try {
+            await signOut(auth);
+            router.replace("/sign-in");
+          } catch (error) {
+            Alert.alert("Error", "Failed to sign out. Please try again.");
+          } finally {
+            setLoading(false);
+          }
         },
-      ]
-    );
+      },
+    ]);
   };
 
   return (

@@ -10,7 +10,7 @@ export default function TabsLayout() {
 
   // Block unauthenticated users from reaching any screen in this group
   if (!user) {
-    return <Redirect href="./auth/sign-in" />;
+    return <Redirect href="/sign-in" />;
   }
 
   return (

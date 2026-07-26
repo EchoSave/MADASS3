@@ -1,6 +1,6 @@
-import { Formik } from "formik";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useCallback, useEffect, useState } from "react";
+import { Formik } from "formik";
+import { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -14,7 +14,11 @@ import {
 } from "react-native";
 import CustomButton from "../components/CustomButton";
 import CustomInput from "../components/CustomInput";
-import { deleteEmployee, getEmployeeById, updateEmployee } from "../services/employeeService";
+import {
+  deleteEmployee,
+  getEmployeeById,
+  updateEmployee,
+} from "../services/employeeService";
 import { employeeSchema } from "../validation/employeeSchema";
 
 type Employee = {
@@ -29,7 +33,7 @@ type Employee = {
 export default function EmployeeDetailsScreen() {
   const router = useRouter();
   const { id } = useLocalSearchParams();
-  const employeeId = typeof id === "string" ? id : id?.[0] ?? "";
+  const employeeId = typeof id === "string" ? id : (id?.[0] ?? "");
 
   const [employee, setEmployee] = useState<Employee | null>(null);
   const [loading, setLoading] = useState(true);
@@ -116,8 +120,13 @@ export default function EmployeeDetailsScreen() {
     return (
       <View style={styles.centerState}>
         <Text style={styles.stateTitle}>Unable to load employee</Text>
-        <Text style={styles.stateText}>{error ?? "The selected employee could not be found."}</Text>
-        <TouchableOpacity style={styles.retryButton} onPress={() => loadEmployee()}>
+        <Text style={styles.stateText}>
+          {error ?? "The selected employee could not be found."}
+        </Text>
+        <TouchableOpacity
+          style={styles.retryButton}
+          onPress={() => loadEmployee()}
+        >
           <Text style={styles.retryText}>Try again</Text>
         </TouchableOpacity>
       </View>
@@ -148,8 +157,16 @@ export default function EmployeeDetailsScreen() {
         </View>
 
         <View style={styles.actions}>
-          <CustomButton title="Edit Employee" variant="primary" onPress={() => setIsEditing(true)} />
-          <CustomButton title="Delete Employee" variant="secondary" onPress={() => setShowDeleteModal(true)} />
+          <CustomButton
+            title="Edit Employee"
+            variant="primary"
+            onPress={() => setIsEditing(true)}
+          />
+          <CustomButton
+            title="Delete Employee"
+            variant="secondary"
+            onPress={() => setShowDeleteModal(true)}
+          />
         </View>
       </ScrollView>
 
@@ -175,7 +192,11 @@ export default function EmployeeDetailsScreen() {
                     value={formik.values.fullName}
                     onChangeText={formik.handleChange("fullName")}
                     onBlur={formik.handleBlur("fullName")}
-                    error={formik.touched.fullName ? formik.errors.fullName : undefined}
+                    error={
+                      formik.touched.fullName
+                        ? formik.errors.fullName
+                        : undefined
+                    }
                     touched={formik.touched.fullName}
                   />
 
@@ -185,7 +206,9 @@ export default function EmployeeDetailsScreen() {
                     onChangeText={formik.handleChange("phone")}
                     onBlur={formik.handleBlur("phone")}
                     keyboardType="phone-pad"
-                    error={formik.touched.phone ? formik.errors.phone : undefined}
+                    error={
+                      formik.touched.phone ? formik.errors.phone : undefined
+                    }
                     touched={formik.touched.phone}
                   />
 
@@ -196,7 +219,9 @@ export default function EmployeeDetailsScreen() {
                     onBlur={formik.handleBlur("email")}
                     keyboardType="email-address"
                     autoCapitalize="none"
-                    error={formik.touched.email ? formik.errors.email : undefined}
+                    error={
+                      formik.touched.email ? formik.errors.email : undefined
+                    }
                     touched={formik.touched.email}
                   />
 
@@ -206,7 +231,11 @@ export default function EmployeeDetailsScreen() {
                     onChangeText={formik.handleChange("employeeId")}
                     onBlur={formik.handleBlur("employeeId")}
                     autoCapitalize="characters"
-                    error={formik.touched.employeeId ? formik.errors.employeeId : undefined}
+                    error={
+                      formik.touched.employeeId
+                        ? formik.errors.employeeId
+                        : undefined
+                    }
                     touched={formik.touched.employeeId}
                   />
 
@@ -215,13 +244,26 @@ export default function EmployeeDetailsScreen() {
                     value={formik.values.position}
                     onChangeText={formik.handleChange("position")}
                     onBlur={formik.handleBlur("position")}
-                    error={formik.touched.position ? formik.errors.position : undefined}
+                    error={
+                      formik.touched.position
+                        ? formik.errors.position
+                        : undefined
+                    }
                     touched={formik.touched.position}
                   />
 
                   <View style={styles.modalActions}>
-                    <CustomButton title="Cancel" variant="secondary" onPress={() => setIsEditing(false)} />
-                    <CustomButton title="Save Changes" variant="primary" onPress={formik.handleSubmit} isLoading={isSaving} />
+                    <CustomButton
+                      title="Cancel"
+                      variant="secondary"
+                      onPress={() => setIsEditing(false)}
+                    />
+                    <CustomButton
+                      title="Save Changes"
+                      variant="primary"
+                      onPress={formik.handleSubmit}
+                      isLoading={isSaving}
+                    />
                   </View>
                 </ScrollView>
               )}
@@ -236,8 +278,17 @@ export default function EmployeeDetailsScreen() {
             <Text style={styles.modalTitle}>Delete employee?</Text>
             <Text style={styles.stateText}>This action cannot be undone.</Text>
             <View style={styles.modalActions}>
-              <CustomButton title="Cancel" variant="secondary" onPress={() => setShowDeleteModal(false)} />
-              <CustomButton title="Delete" variant="primary" onPress={handleDelete} isLoading={isDeleting} />
+              <CustomButton
+                title="Cancel"
+                variant="secondary"
+                onPress={() => setShowDeleteModal(false)}
+              />
+              <CustomButton
+                title="Delete"
+                variant="primary"
+                onPress={handleDelete}
+                isLoading={isDeleting}
+              />
             </View>
           </View>
         </View>

@@ -5,7 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  View
+  View,
 } from "react-native";
 import CustomButton from "../components/CustomButton";
 
@@ -28,15 +28,12 @@ export default function SignUp() {
     confirmPassword: "",
   };
 
-  const handleSignUp = async (values: {
-    email: string;
-    password: string;
-  }) => {
+  const handleSignUp = async (values: { email: string; password: string }) => {
     setAuthError(null);
     setIsisLoading(true);
     try {
       await createUserWithEmailAndPassword(auth, values.email, values.password);
-      router.replace("/auth/employee-form");
+      router.replace("/employee-form");
     } catch (error: any) {
       setAuthError(mapSignUpError(error.code));
     } finally {
@@ -97,9 +94,7 @@ export default function SignUp() {
                   secureTextEntry
                 />
 
-                {authError && (
-                  <Text style={styles.errorText}>{authError}</Text>
-                )}
+                {authError && <Text style={styles.errorText}>{authError}</Text>}
 
                 <CustomButton
                   title={isLoading ? "Creating Account..." : "Sign Up"}
@@ -110,8 +105,10 @@ export default function SignUp() {
 
                 {/* Link to Sign In */}
                 <View style={styles.signInContainer}>
-                  <Text style={styles.signInText}>Already have an account? </Text>
-                  <Pressable onPress={() => router.push("/(auth)/sign-in")}>
+                  <Text style={styles.signInText}>
+                    Already have an account?{" "}
+                  </Text>
+                  <Pressable onPress={() => router.push("/sign-in")}>
                     <Text style={styles.signInLink}>Sign In</Text>
                   </Pressable>
                 </View>
@@ -173,10 +170,10 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   errorText: {
-    color: "#dc2626", 
-    fontSize: 14, 
-    marginTop: 8, 
-    marginBottom: 4 
+    color: "#dc2626",
+    fontSize: 14,
+    marginTop: 8,
+    marginBottom: 4,
   },
   signInContainer: {
     flexDirection: "row",
@@ -193,4 +190,3 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 });
-

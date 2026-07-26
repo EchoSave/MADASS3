@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
 import { useAuth } from "../context/AuthContext";
 import { getEmployees } from "../services/employeeService";
 
@@ -29,31 +30,34 @@ export default function EmployeeListScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const loadEmployees = useCallback(async (showRefresh = false) => {
-    if (!user?.uid) {
-      setEmployees([]);
-      setLoading(false);
-      setError("Please sign in to view your employees.");
-      return;
-    }
-
-    try {
-      if (showRefresh) {
-        setRefreshing(true);
-      } else {
-        setLoading(true);
+  const loadEmployees = useCallback(
+    async (showRefresh = false) => {
+      if (!user?.uid) {
+        setEmployees([]);
+        setLoading(false);
+        setError("Please sign in to view your employees.");
+        return;
       }
 
-      const data = await getEmployees(user.uid);
-      setEmployees(data as Employee[]);
-      setError(null);
-    } catch {
-      setError("Unable to load employees right now.");
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  }, [user?.uid]);
+      try {
+        if (showRefresh) {
+          setRefreshing(true);
+        } else {
+          setLoading(true);
+        }
+
+        const data = await getEmployees(user.uid);
+        setEmployees(data as Employee[]);
+        setError(null);
+      } catch {
+        setError("Unable to load employees right now.");
+      } finally {
+        setLoading(false);
+        setRefreshing(false);
+      }
+    },
+    [user?.uid],
+  );
 
   useEffect(() => {
     loadEmployees();
@@ -73,7 +77,10 @@ export default function EmployeeListScreen() {
       <View style={styles.centerState}>
         <Text style={styles.stateTitle}>Something went wrong</Text>
         <Text style={styles.stateText}>{error}</Text>
-        <TouchableOpacity style={styles.retryButton} onPress={() => loadEmployees()}>
+        <TouchableOpacity
+          style={styles.retryButton}
+          onPress={() => loadEmployees()}
+        >
           <Text style={styles.retryText}>Try again</Text>
         </TouchableOpacity>
       </View>
@@ -84,25 +91,34 @@ export default function EmployeeListScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Employees</Text>
-        <Text style={styles.subtitle}>View, update, and remove team records.</Text>
+        <Text style={styles.subtitle}>
+          View, update, and remove team records.
+        </Text>
       </View>
 
       {employees.length === 0 ? (
         <View style={styles.centerState}>
           <Text style={styles.stateTitle}>No employees found</Text>
-          <Text style={styles.stateText}>Create a new employee record to get started.</Text>
+          <Text style={styles.stateText}>
+            Create a new employee record to get started.
+          </Text>
         </View>
       ) : (
         <FlatList
           data={employees}
           keyExtractor={(item) => item.id}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => loadEmployees(true)} />}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => loadEmployees(true)}
+            />
+          }
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.card}
               onPress={() =>
                 router.push({
-                  pathname: "/(tabs)/employeeDetails" as any,
+                  pathname: "/employeeDetails" as any,
                   params: { id: item.id },
                 })
               }
