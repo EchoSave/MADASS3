@@ -1,13 +1,12 @@
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
   ActivityIndicator,
   ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity
 } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { saveEmployee } from "../services/employeeService";
@@ -40,14 +39,14 @@ export default function AddEmployeeScreen() {
       setLoading(true);
       setError(null);
 
-await saveEmployee(user.uid, {
-  fullName,
-  position,
-  email,
-  employeeId,
-  phone,
-});
-      
+      await saveEmployee(user.uid, {
+        fullName,
+        position,
+        email,
+        employeeId,
+        phone,
+      });
+        
 
       router.push("/employeesList");
     } catch (err) {
