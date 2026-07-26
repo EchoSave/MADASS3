@@ -7,9 +7,9 @@ import {
   getDocs,
   query,
   updateDoc,
-  where
+  where,
 } from "firebase/firestore";
-import { db } from "../config/firebase";
+import { db } from "../../config/firebase";
 
 // CREATE — Add a new employee
 export async function saveEmployee(employee: any) {
@@ -18,10 +18,7 @@ export async function saveEmployee(employee: any) {
 
 // READ — Get all employees for a specific user
 export async function getEmployees(userId: string) {
-  const q = query(
-    collection(db, "employees"),
-    where("userId", "==", userId)
-  );
+  const q = query(collection(db, "employees"), where("userId", "==", userId));
 
   const snapshot = await getDocs(q);
   return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));

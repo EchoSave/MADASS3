@@ -19,13 +19,13 @@ export default function WelcomeScreen() {
         <CustomButton 
           title="Sign In" 
           variant="primary" 
-          onPress={() => router.push('/(auth)/sign-in')} 
+          onPress={() => router.push("/(auth)/sign-in")} 
         />
         
         <CustomButton 
           title="Sign Up" 
           variant="secondary" 
-          onPress={() => router.push('/(auth)/sign-up')} 
+          onPress={() => router.push("/(auth)/sign-up")} 
         />
       </View>
     </View>

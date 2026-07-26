@@ -31,7 +31,7 @@ export default function EmployeeScreen() {
 
   const handleDismissModal = () => {
     setModalVisible(false);
-    router.replace("/(tabs)/employee-page");
+    router.replace("./tabs/employee-page");
   };
 
   return (

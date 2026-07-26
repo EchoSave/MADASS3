@@ -3,7 +3,7 @@ import { signOut } from "firebase/auth";
 import { useState } from "react";
 import { Alert, StyleSheet, Text, View } from "react-native";
 import { auth } from "../../config/firebase";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import CustomButton from "../components/CustomButton";
 
 export default function ProfileScreen() {
@@ -24,7 +24,7 @@ export default function ProfileScreen() {
             setLoading(true);
             try {
               await signOut(auth);
-              router.replace("/(auth)/sign-in");
+              router.replace("/auth/sign-in");
             } catch (error) {
               Alert.alert("Error", "Failed to sign out. Please try again.");
             } finally {

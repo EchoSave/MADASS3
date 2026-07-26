@@ -31,13 +31,13 @@ export default function SignIn() {
     setIsLoading(true);
     try {
       await signInWithEmailAndPassword(auth, values.email, values.password);
-      router.replace("/(tabs)/profile")
+      router.replace("./tabs/employee-page");
     } catch (error: any) {
       setAuthError(mapAuthError(error.code));
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -97,7 +97,7 @@ export default function SignIn() {
                 <CustomButton
                   title="Sign In"
                   variant="primary"
-                  onPress={formik.handleSubmit}
+                  onPress={formik.submitForm}
                   disabled={isLoading}
                 />
 

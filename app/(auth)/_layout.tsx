@@ -1,14 +1,18 @@
 import { Redirect, Stack, usePathname } from "expo-router";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 
 export default function AuthLayout() {
-  const { user } = useAuth();
+  const { user, initializing } = useAuth();
   const pathname = usePathname();
 
-  const isOnEmployeeForm = pathname === "/employee-form";
+  const isOnEmployeeForm = pathname === "/auth/employee-form";
+
+  if (initializing) {
+    return null;
+  }
 
   if (user && !isOnEmployeeForm) {
-    return <Redirect href="/employee-page" />; 
+    return <Redirect href="/tabs/employee-page" />;
   }
 
   return (

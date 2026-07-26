@@ -8,7 +8,7 @@ const BaseForm = ({ initialValues, validationSchema, onSubmit, children }) => {
       validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
-        {(formik) => children(formik)}
+      {(formik) => children(formik)}
     </Formik>
   );
 };

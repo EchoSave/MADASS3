@@ -30,7 +30,7 @@ export default function EmployeeListScreen() {
             style={styles.card}
             onPress={() =>
               router.push({
-                pathname: "/tabs/employeeDetails",
+                pathname: "/(tabs)/employeeDetails",
                 params: { id: item.id },
               })
             }
