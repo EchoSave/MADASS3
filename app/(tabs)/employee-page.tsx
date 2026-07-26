@@ -102,6 +102,12 @@ export default function EmployeeListScreen() {
           <Text style={styles.stateText}>
             Create a new employee record to get started.
           </Text>
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => router.push("/add-employee")}
+          >
+            <Text style={styles.addButtonText}>Add Employee</Text>
+          </TouchableOpacity>
         </View>
       ) : (
         <FlatList
@@ -204,5 +210,18 @@ const styles = StyleSheet.create({
   retryText: {
     color: "#ffffff",
     fontWeight: "600",
+  },
+  addButton: {
+    marginTop: 16,
+    backgroundColor: "#0284c7",
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+  },
+  addButtonText: {
+    color: "#ffffff",
+    fontWeight: "600",
+    fontSize: 16,
+    textAlign: "center",
   },
 });

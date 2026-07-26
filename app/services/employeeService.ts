@@ -12,8 +12,14 @@ import {
 import { db } from "../../config/firebase";
 
 // CREATE — Add a new employee
-export async function saveEmployee(employee: any) {
-  return await addDoc(collection(db, "employees"), employee);
+export async function saveEmployee(userId: string, employee: any) {
+  const payload = {
+    ...employee,
+    userId,          
+    createdAt: Date.now(),
+  };
+
+  return await addDoc(collection(db, "employees"), payload);
 }
 
 // READ — Get all employees for a specific user

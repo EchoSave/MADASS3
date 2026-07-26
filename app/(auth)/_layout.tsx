@@ -9,14 +9,14 @@ export default function AuthLayout() {
     return null;
   }
 
-  // Allow index + auth screens
+
   const isAuthScreen = ["/", "/sign-in", "/sign-up", "/employee-form"].includes(
     pathname,
   );
 
-  // Only redirect logged-in users AWAY from auth screens
+
   if (user && isAuthScreen) {
-    return <Redirect href="/employee-page" />;
+    return <Redirect href="/employee-page"/>;
   }
 
   return (

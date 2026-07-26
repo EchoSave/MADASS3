@@ -23,4 +23,4 @@ export const auth: Auth = getApps().length
       persistence: getReactNativePersistence(AsyncStorage),
     });
 
-export const db = getFirestore(app); // Used for Employee form
+export const db = getFirestore(app); 
