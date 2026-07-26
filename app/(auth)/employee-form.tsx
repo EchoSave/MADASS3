@@ -15,18 +15,13 @@ import CustomButton from "../components/CustomButton";
 import CustomInput from "../components/CustomInput";
 import { employeeSchema } from "../validation/employeeSchema";
 
-// Added imports
-
 import { useAuth } from "../context/AuthContext";
 import { saveEmployee } from "../services/employeeService";
 
 export default function EmployeeScreen() {
   const [modalVisible, setModalVisible] = useState(false);
-
-  // Added auth hook to get the current user information, which can be used for employee records.
   const { user } = useAuth();
 
-  //  employee information /Formik now manages all form fields
   const initialValues = {
     fullName: "",
     phone: "",
@@ -35,11 +30,9 @@ export default function EmployeeScreen() {
     position: "",
   };
 
-  // When clicking the submit button, show a page with a success message.
-
   const handleDismissModal = () => {
     setModalVisible(false);
-    router.replace("/employee-page");
+    router.replace("/employeesList");
   };
 
   return (
@@ -47,11 +40,7 @@ export default function EmployeeScreen() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Header */}
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.header}>
           <Text style={styles.title}>Employee Information</Text>
           <Text style={styles.subtitle}>
@@ -59,16 +48,14 @@ export default function EmployeeScreen() {
           </Text>
         </View>
 
-        {/* Formik Wrapper */}
         <Formik
           initialValues={initialValues}
           validationSchema={employeeSchema}
-          enableReinitialize
-          validateOnMount
           onSubmit={async (values, { resetForm }) => {
-            await saveEmployee({
+            if (!user) return;
+
+            await saveEmployee(user.uid, {
               ...values,
-              userId: user?.uid,
               createdAt: new Date(),
             });
 
@@ -135,7 +122,6 @@ export default function EmployeeScreen() {
                 }
               />
 
-              {/* Submit Button */}
               <View style={styles.footer}>
                 <CustomButton
                   title="Submit Information"
@@ -147,12 +133,11 @@ export default function EmployeeScreen() {
           )}
         </Formik>
 
-        {/* Success Modal */}
         <Modal visible={modalVisible} transparent animationType="fade">
           <View style={styles.modalBg}>
             <View style={styles.modalContent}>
               <Text style={styles.modalText}>
-                Employee Added Successfully!{" "}
+                Employee Added Successfully!
               </Text>
               <Button title="Dismiss" onPress={handleDismissModal} />
             </View>
@@ -164,36 +149,18 @@ export default function EmployeeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-  },
+  container: { flex: 1, backgroundColor: "#ffffff" },
   scrollContainer: {
     flexGrow: 1,
     paddingHorizontal: 24,
     paddingTop: 20,
     paddingBottom: 40,
   },
-  header: {
-    marginBottom: 24,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#0f172a",
-    marginBottom: 6,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: "#64748b",
-  },
-  form: {
-    width: "100%",
-  },
-  footer: {
-    width: "100%",
-    marginTop: 8,
-  },
+  header: { marginBottom: 24 },
+  title: { fontSize: 24, fontWeight: "bold", color: "#0f172a" },
+  subtitle: { fontSize: 14, color: "#64748b" },
+  form: { width: "100%" },
+  footer: { width: "100%", marginTop: 8 },
   modalBg: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -206,9 +173,5 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: "center",
   },
-  modalText: {
-    fontSize: 18,
-    fontWeight: "600",
-    marginBottom: 20,
-  },
+  modalText: { fontSize: 18, fontWeight: "600", marginBottom: 20 },
 });

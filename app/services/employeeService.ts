@@ -15,7 +15,7 @@ import { db } from "../../config/firebase";
 export async function saveEmployee(userId: string, employee: any) {
   const payload = {
     ...employee,
-    userId,          
+    userId,
     createdAt: Date.now(),
   };
 
@@ -30,7 +30,7 @@ export async function getEmployees(userId: string) {
   return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 }
 
-// READ — Get a single employee by ID (needed for employee-details)
+// READ — Get a single employee by ID
 export async function getEmployeeById(id: string) {
   const ref = doc(db, "employees", id);
   const snapshot = await getDoc(ref);
